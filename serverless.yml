@@ -29,8 +29,30 @@ custom:
   baseApi: ${self:custom.contextPath}
   funcDir: src/4-framework/functions
 
+functions:
+  authorizer:
+    handler: ${self:custom.funcDir}/authorizer/authorizer.handler
+  signUp:
+    handler: ${self:custom.funcDir}/users/createUserIdentity.handler
+    events:
+      - http:
+          path: ${self:custom.baseApi}/sign-up
+          method: post
+          cors:
+            origin: '*'
+            headers: '*'
+  signIn:
+    handler: ${self:custom.funcDir}/users/signIn.handler
+    events:
+      - http:
+          path: ${self:custom.baseApi}/sign-in
+          method: post
+          cors:
+            origin: '*'
+            headers: '*'
 plugins:
   - serverless-esbuild
   - serverless-offline
 resources:
+  - ${file(./devops/resources/authorizer.yml)}
   - ${file(./devops/resources/cognito.yml)}

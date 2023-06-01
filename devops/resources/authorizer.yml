@@ -1,0 +1,33 @@
+Resources:
+  AuthorizerPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName:
+        Fn::GetAtt: AuthorizerLambdaFunction.Arn
+      Action: lambda:InvokeFunction
+      Principal:
+        Fn::Join: ['', ['apigateway.', { Ref: 'AWS::URLSuffix' }]]
+  Authorizer:
+    Type: AWS::ApiGateway::Authorizer
+    Properties:
+      AuthorizerResultTtlInSeconds: '300'
+      AuthorizerUri:
+        Fn::Join:
+          - ''
+          - - 'arn:aws:apigateway:'
+            - ${self:provider.region}
+            - ':lambda:path/2015-03-31/functions/'
+            - Fn::GetAtt: [AuthorizerLambdaFunction, Arn]
+            - /invocations
+      AuthType: custom
+      Type: REQUEST
+      IdentitySource: method.request.header.Authorization
+      Name: AccounAuthorizer
+      RestApiId: ${ssm:/alumnus/infra/api-gateway/id}
+  SSMApiGatewayAuthorizer:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: /alumnus/ms-auth/authorizer-id
+      Type: String
+      Value:
+        Ref: Authorizer
