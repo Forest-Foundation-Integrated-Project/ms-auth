@@ -1,0 +1,13 @@
+name: "Serverless Deploy"
+description: ""
+inputs:
+  stage:
+    description: 'stage'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Serverless Deploy
+      shell: bash
+      run: |
+        npx sls deploy --verbose -s ${{ inputs.stage }}
