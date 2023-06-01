@@ -10,6 +10,18 @@ provider:
   apiGateway:
     restApiId: ${ssm:/alumnus/infra/api-gateway/id}
     restApiRootResourceId: ${ssm:/alumnus/infra/api-gateway/root-resource-id}
+  environment:
+    user_pool_id: { Ref: UserPool }
+    client_id: { Ref: UserClient }
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - cognito-idp:AdminInitiateAuth
+            - cognito-idp:AdminCreateUser
+            - cognito-idp:AdminSetUserPassword
+          Resource: "*"
 
 custom:
   serviceName: auth
@@ -20,3 +32,5 @@ custom:
 plugins:
   - serverless-esbuild
   - serverless-offline
+resources:
+  - ${file(./devops/resources/cognito.yml)}
