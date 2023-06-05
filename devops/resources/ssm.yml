@@ -1,0 +1,7 @@
+Resources:
+  SSMInvokeApiGatewayAuthorizer:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: /alumnus/invoke/createIdentity
+      Type: String
+      Value: ${self:service}-${self:provider.stage}-createUserIdentity

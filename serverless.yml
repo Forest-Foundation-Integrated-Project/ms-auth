@@ -7,6 +7,7 @@ provider:
   runtime: nodejs16.x
   region: 'us-east-1'
   memorySize: 512
+  stage: ${opt:stage, "${env:stage, 'dev'}"}
   apiGateway:
     restApiId: ${ssm:/alumnus/infra/api-gateway/id}
     restApiRootResourceId: ${ssm:/alumnus/infra/api-gateway/root-resource-id}
@@ -32,7 +33,7 @@ custom:
 functions:
   authorizer:
     handler: ${self:custom.funcDir}/authorizer/authorizer.handler
-  signUp:
+  createUserIdentity:
     handler: ${self:custom.funcDir}/users/createUserIdentity.handler
   signIn:
     handler: ${self:custom.funcDir}/users/signIn.handler
@@ -47,5 +48,6 @@ plugins:
   - serverless-esbuild
   - serverless-offline
 resources:
+  - ${file(./devops/resources/ssm.yml)}
   - ${file(./devops/resources/authorizer.yml)}
   - ${file(./devops/resources/cognito.yml)}
