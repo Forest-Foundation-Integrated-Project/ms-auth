@@ -10,12 +10,10 @@ import { httpResponse } from '../../utility/httpResponse'
 
 export const handler = httpHandler(async (event: APIGatewayProxyEvent, context: Context) => {
   context.callbackWaitsForEmptyEventLoop = false
-  console.log('entrou => ', event)
+  console.log('event => ', event)
   const operator = container.get(CreateUserIdentityOperator)
-  const body = JSON.parse(event?.body as string)
-  console.log('entrou body => ', body)
 
-  const input = new InputCreateUserIdentity(body)
+  const input = new InputCreateUserIdentity(event as Object)
   const result = await operator.exec(input)
 
   if (result.isLeft()) {
