@@ -10,6 +10,7 @@ export interface ISignResponse {
   token: string
   refreshToken: string
   expiresIn: number
+  user_id?: string
 }
 
 export type OutputSignInDto = Either<IError, ISignResponse>

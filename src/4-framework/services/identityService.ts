@@ -7,7 +7,7 @@ import { AuthorizerDto } from '../../2-business/dto/authorizer/authorizerDto'
 import { ISignResponse, InputSignInDto } from '../../2-business/dto/users/signInDto'
 import { Either, left, right } from '../shared/either'
 import { IError } from '../shared/iError'
-import { SignInServiceFailed, UserAuthFailed, UserIdentityCreationFailed } from '../../2-business/module/errors/userIdentityErrors'
+import { SignInServiceFailed, UserAuthFailed, UserIdentityCreationFailed, UserNotFound } from '../../2-business/module/errors/userIdentityErrors'
 
 @injectable()
 export class IdentityService implements IIdentityService {
@@ -98,6 +98,10 @@ export class IdentityService implements IIdentityService {
       const userId = response
         .UserAttributes
         .find(item => item.Name === 'custom:user_id')?.Value
+
+      if (!userId) {
+        return left(UserNotFound)
+      }
 
       return right({
         username: response.Username,

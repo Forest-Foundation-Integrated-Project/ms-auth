@@ -27,3 +27,9 @@ export const SignInServiceFailed = {
   message: 'Sign In Service Failed',
   shortMessage: 'SignInServiceFailed'
 }
+
+export const UserNotFound = {
+  code: 'UNF-001',
+  message: 'User Not Found',
+  shortMessage: 'UserNotFound'
+}

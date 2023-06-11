@@ -8,7 +8,7 @@ export interface InputAuthorizerDto {
 
 export interface AuthorizerDto {
   username: string,
-  userId?: string,
+  userId: string,
 }
 
 export type OutputAuthorizerDto = Either<IError, AuthorizerDto>
